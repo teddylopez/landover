@@ -3,3 +3,19 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+
+body {
+  font-family: "Roboto Mono", serif;
+}
+
+a {
+  @apply underline;
+}
+
+.themed {
+  @apply bg-white dark:bg-dark-background text-brand-green dark:text-brand-orange;
+}
+
+.button {
+  @apply bg-brand-green dark:bg-brand-orange text-white dark:text-dark-background;
+}
