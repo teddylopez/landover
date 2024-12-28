@@ -18,7 +18,7 @@ defmodule LandoverWeb.Router do
   scope "/", LandoverWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", HomeLive
   end
 
   # Other scopes may use custom stacks.

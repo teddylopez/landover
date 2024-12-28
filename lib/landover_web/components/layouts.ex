@@ -10,5 +10,7 @@ defmodule LandoverWeb.Layouts do
   """
   use LandoverWeb, :html
 
+  import LandoverWeb.LayoutComponents
+
   embed_templates "layouts/*"
 end
