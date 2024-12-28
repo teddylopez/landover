@@ -55,6 +55,10 @@ defmodule LandoverWeb do
       use Phoenix.LiveView,
         layout: {LandoverWeb.Layouts, :app}
 
+      use Gettext, backend: LandoverWeb.Gettext
+
+      import Landover.CustomTooling
+
       unquote(html_helpers())
     end
   end
@@ -62,6 +66,9 @@ defmodule LandoverWeb do
   def live_component do
     quote do
       use Phoenix.LiveComponent
+      use Gettext, backend: LandoverWeb.Gettext
+
+      import Landover.CustomTooling
 
       unquote(html_helpers())
     end
@@ -70,10 +77,13 @@ defmodule LandoverWeb do
   def html do
     quote do
       use Phoenix.Component
+      use Gettext, backend: LandoverWeb.Gettext
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
         only: [get_csrf_token: 0, view_module: 1, view_template: 1]
+
+      import Landover.CustomTooling
 
       # Include general helpers for rendering HTML
       unquote(html_helpers())
