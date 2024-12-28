@@ -9,7 +9,7 @@ defmodule LandoverWeb.HomeLive do
     ~H"""
     <.single_layout>
       <.content_container>
-        {dgettext("home", "welcome")}
+        <.typeit_text id="welcome-message" text={dgettext("home", "welcome")} />
       </.content_container>
     </.single_layout>
     """

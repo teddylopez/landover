@@ -20,9 +20,6 @@ defmodule LandoverWeb.PageComponents do
 
   import LandoverWeb.CoreComponents
 
-  attr(:socket, :map, required: true)
-  attr(:current_user, :map, required: true)
-
   attr(:header, :string, required: false, default: nil)
   attr(:rest, :global, include: ~w(x-data))
   attr(:class, :string, default: "")
@@ -34,7 +31,7 @@ defmodule LandoverWeb.PageComponents do
   def content_container(assigns) do
     ~H"""
     <div
-      class={"bg-papyrus dark:bg-dark-background shadow-xl dark:shadow-2xl rounded-sm my-4
+      class={"dark:bg-dark-background shadow-xl dark:shadow-2xl rounded-sm my-4
               transition duration-200 ease-in-out w-full border-2 border-brand-green
               dark:border-brand-orange #{@class}"}
       {@rest}

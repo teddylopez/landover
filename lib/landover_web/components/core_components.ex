@@ -673,4 +673,13 @@ defmodule LandoverWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
+
+  attr(:id, :string, required: true)
+  attr(:text, :string, required: true)
+
+  def typeit_text(assigns) do
+    ~H"""
+    <pre id={@id} phx-hook="TypeIt" data-typeit-text={@text}></pre>
+    """
+  end
 end

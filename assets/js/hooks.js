@@ -1,4 +1,5 @@
 const appThemeHooks = require('./app_themes')
+const animationHooks = require('./animations')
 
 let Hooks = {};
 
@@ -7,6 +8,12 @@ Hooks.AppThemes = {
   mounted() {
     appThemeHooks.methods.initialThemeCheck();
     appThemeHooks.methods.toggleTheme(this);
+  },
+}
+
+Hooks.TypeIt = {
+  mounted() {
+    animationHooks.methods.typeit(this);
   },
 }
 
