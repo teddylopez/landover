@@ -59,6 +59,8 @@ defmodule LandoverWeb do
 
       import Landover.CustomTooling
 
+      on_mount LandoverWeb.RestoreLocale
+
       unquote(html_helpers())
     end
   end
