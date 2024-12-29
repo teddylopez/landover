@@ -10,6 +10,9 @@ defmodule LandoverWeb.Helpers.GlobalHelpers do
 
   def highlight_locale(conn, locale_option) do
     locale = Map.get(conn.cookies, "locale")
-    if locale == locale_option, do: "text-dark-offset-lighter", else: "text-dark-offset"
+
+    if locale == locale_option,
+      do: "text-gray-500 dark:text-dark-offset-lighter",
+      else: "text-gray-300 dark:text-dark-offset"
   end
 end

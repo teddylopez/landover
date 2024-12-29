@@ -1,7 +1,6 @@
 defmodule LandoverWeb.HomeLive do
   use LandoverWeb, :live_view
 
-  import LandoverWeb.PageComponents
   import LandoverWeb.LayoutComponents
 
   @impl true

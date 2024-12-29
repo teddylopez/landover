@@ -14,7 +14,7 @@ msgstr ""
 #: lib/landover_web/live/home_live.ex:12
 #, elixir-autogen, elixir-format
 msgid "welcome"
-msgstr "Bienvenido a Landover"
+msgstr "Bienvenido a Landover..."
 
 #: lib/landover_web/components/layout_components.ex:46
 #, elixir-autogen, elixir-format

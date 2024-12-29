@@ -66,7 +66,7 @@ defmodule LandoverWeb.CoreComponents do
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
+              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded bg-white p-14 shadow-lg ring-1 transition"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -202,7 +202,7 @@ defmodule LandoverWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+      <div class="mt-10 space-y-8 bg-white dark:bg-dark-background">
         {render_slot(@inner_block, f)}
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           {render_slot(action, f)}
@@ -231,8 +231,9 @@ defmodule LandoverWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "phx-submit-loading:opacity-75 rounded py-2 px-3",
+        "text-sm font-semibold leading-6 text-white dark:text-dark-background
+         bg-brand-green dark:bg-brand-orange active:text-white/80",
         @class
       ]}
       {@rest}
@@ -310,7 +311,7 @@ defmodule LandoverWeb.CoreComponents do
 
     ~H"""
     <div>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
+      <label class="flex items-center gap-4 text-sm leading-6">
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
         <input
           type="checkbox"
@@ -335,7 +336,7 @@ defmodule LandoverWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class="mt-2 block w-full rounded border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
         multiple={@multiple}
         {@rest}
       >
@@ -355,7 +356,7 @@ defmodule LandoverWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem]",
+          "mt-2 block w-full rounded text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem]",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -377,7 +378,7 @@ defmodule LandoverWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "mt-2 block w-full rounded-sm text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -396,7 +397,10 @@ defmodule LandoverWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label
+      for={@for}
+      class="block text-sm font-semibold leading-6 text-brand-green dark:text-brand-orange"
+    >
       {render_slot(@inner_block)}
     </label>
     """
@@ -409,7 +413,7 @@ defmodule LandoverWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600">
+    <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-400">
       <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" />
       {render_slot(@inner_block)}
     </p>
@@ -429,10 +433,13 @@ defmodule LandoverWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8 text-brand-green dark:text-brand-orange">
           {render_slot(@inner_block)}
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+        <p
+          :if={@subtitle != []}
+          class="mt-2 text-sm leading-6 text-brand-green dark:text-brand-orange"
+        >
           {render_slot(@subtitle)}
         </p>
       </div>
@@ -680,6 +687,99 @@ defmodule LandoverWeb.CoreComponents do
   def typeit_text(assigns) do
     ~H"""
     <pre id={@id} phx-hook="TypeIt" data-typeit-text={@text}></pre>
+    """
+  end
+
+  attr(:label, :string, required: false, default: nil)
+  attr(:rest, :global, include: ~w(x-data))
+  attr(:class, :string, default: "")
+  attr(:inner_block_class, :string, default: "")
+  attr(:modal, :boolean, default: false)
+  attr(:modal_id, :string, default: "")
+  slot(:inner_block)
+
+  def content_container(assigns) do
+    ~H"""
+    <div
+      class={"dark:bg-dark-background shadow-xl dark:shadow-2xl rounded-sm my-4
+              transition duration-200 ease-in-out w-full border-2 border-brand-green
+              dark:border-brand-orange #{@class}"}
+      {@rest}
+    >
+      <div class="flex relative" style="top: -2px;">
+        <span
+          :if={@label}
+          class="flex relative text-xs text-white dark:text-dark-background
+                 bg-brand-green dark:bg-brand-orange px-2 rounded-tl-sm rounded-br-sm"
+          style=" padding-bottom: 1px;"
+        >
+          {@label}
+          <%= if @modal do %>
+            <.link phx-click={show_modal(@modal_id)} class="cursor-pointer flex ml-2">
+              <.icon name="hero-information-circle" class="w-4 h-4" />
+            </.link>
+          <% end %>
+        </span>
+      </div>
+
+      <div class={"lg:py-4 lg:px-4 px-1 #{@inner_block_class}"}>
+        {render_slot(@inner_block)}
+      </div>
+    </div>
+    """
+  end
+
+  attr(:header, :string, required: false, default: nil)
+  attr(:class, :string, required: false, default: nil)
+  attr(:modal, :boolean, default: false)
+  attr(:modal_id, :string, required: false)
+  slot(:inner_block, required: true)
+
+  def content_section(assigns) do
+    ~H"""
+    <div
+      class={"pb-4 mx-1 lg:mx-0 w-full bg-white rounded-sm #{@class}"}
+      style="border-top: 2px solid black;"
+    >
+      <div class="flex">
+        <span
+          class="flex relative text-xs text-white bg-gray-800 px-2 rounded-br rounded-bl"
+          style="top: -2px; padding-bottom: 1px;"
+        >
+          {@header}
+          <%= if @modal do %>
+            <.link phx-click={show_modal(@modal_id)} class="cursor-pointer flex ml-2">
+              <.icon name="hero-information-circle" class="ml-1 w-4 h-4" />
+            </.link>
+          <% end %>
+        </span>
+      </div>
+      {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  slot(:inner_block, required: true)
+  attr(:class, :string, default: "")
+  attr(:rest, :global)
+
+  def desktop_div(assigns) do
+    ~H"""
+    <div class={"hidden lg:inline #{@class}"} {@rest}>
+      {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  slot(:inner_block, required: true)
+  attr(:class, :string, default: "")
+  attr(:rest, :global)
+
+  def mobile_div(assigns) do
+    ~H"""
+    <div class={"inline lg:hidden #{@class}"} {@rest}>
+      {render_slot(@inner_block)}
+    </div>
     """
   end
 end

@@ -9,7 +9,7 @@ body {
 }
 
 a {
-  @apply underline;
+  @apply underline underline-offset-4 decoration-2;
 }
 
 .themed {
