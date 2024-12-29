@@ -17,7 +17,7 @@ module.exports = {
       colors: {
         brand: "#FD4F00",
         "brand-orange": "#FFA86A",
-        "brand-green": "#066360",
+        "brand-green": "#004953",
         "dark-background": "#222129",
         "dark-offset": "#4E4D54",
         "dark-offset-lighter": "#605F65",
