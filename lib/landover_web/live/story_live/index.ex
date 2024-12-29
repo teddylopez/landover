@@ -25,7 +25,9 @@ defmodule LandoverWeb.StoryLive.Index do
       <:col :let={{_id, story}} label="Created by">
         {story.author.email}
       </:col>
-      <:col :let={{_id, story}} label="Completed at">{story.completed_at}</:col>
+      <:col :let={{_id, story}} label="Completed at">
+        {format(story.completed_at)}
+      </:col>
       <:col :let={{_id, story}} label="Metadata">{inspect(story.metadata)}</:col>
       <:action :let={{_id, story}}>
         <div class="sr-only">

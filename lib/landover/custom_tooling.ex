@@ -15,4 +15,8 @@ defmodule Landover.CustomTooling do
   def ok(socket), do: {:ok, socket}
   def ok(socket, layout: layout), do: {:ok, socket, layout: layout}
   def noreply(socket), do: {:noreply, socket}
+
+  def format(nil), do: "-"
+  def format(""), do: "-"
+  def format(val), do: val
 end
