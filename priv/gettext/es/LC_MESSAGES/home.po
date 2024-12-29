@@ -11,12 +11,17 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/landover_web/live/home_live.ex:12
+#: lib/landover_web/live/user_login_live.ex:7
 #, elixir-autogen, elixir-format
 msgid "welcome"
 msgstr "Bienvenido a Landover..."
 
-#: lib/landover_web/components/layout_components.ex:46
+#: lib/landover_web/live/home_live.ex:18
 #, elixir-autogen, elixir-format
-msgid "About"
-msgstr "Sobre"
+msgid "Stories"
+msgstr ""
+
+#: lib/landover_web/live/home_live.ex:13
+#, elixir-autogen, elixir-format, fuzzy
+msgid "welcome_back"
+msgstr "Bienvenido de vuelta, %{user}"

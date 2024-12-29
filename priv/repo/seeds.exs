@@ -10,6 +10,6 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-Landover.Accounts.register_user(%{email: "ted@landover.com", password: "password"})
+Landover.Accounts.register_user(%{email: "ted@landover.com", password: "password12345"})
 
 IO.puts("Seeds successfully imported...")

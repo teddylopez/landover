@@ -10,14 +10,3 @@
 #
 msgid ""
 msgstr ""
-
-#: lib/landover_web/components/layout_components.ex:87
-#: lib/landover_web/components/layout_components.ex:90
-#, elixir-autogen, elixir-format
-msgid "en"
-msgstr ""
-
-#: lib/landover_web/components/layout_components.ex:84
-#, elixir-autogen, elixir-format
-msgid "es"
-msgstr ""

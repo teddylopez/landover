@@ -11,12 +11,17 @@
 msgid ""
 msgstr ""
 
-#: lib/landover_web/live/home_live.ex:12
+#: lib/landover_web/live/user_login_live.ex:7
 #, elixir-autogen, elixir-format
 msgid "welcome"
 msgstr ""
 
-#: lib/landover_web/components/layout_components.ex:46
+#: lib/landover_web/live/home_live.ex:18
 #, elixir-autogen, elixir-format
-msgid "About"
+msgid "Stories"
+msgstr ""
+
+#: lib/landover_web/live/home_live.ex:13
+#, elixir-autogen, elixir-format
+msgid "welcome_back"
 msgstr ""

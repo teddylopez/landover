@@ -128,8 +128,8 @@ defmodule LandoverWeb.CoreComponents do
       {@rest}
     >
       <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">
-        <.icon :if={@kind == :info} name="hero-information-circle-mini" class="h-4 w-4" />
-        <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" />
+        <.icon :if={@kind == :info} name="hero-face-smile" class="h-4 w-4" />
+        <.icon :if={@kind == :error} name="hero-face-frown" class="h-4 w-4" />
         {@title}
       </p>
       <p class="mt-2 text-sm leading-5">{msg}</p>
@@ -362,7 +362,7 @@ defmodule LandoverWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem] bg-white dark:bg-dark-offset",
+          "mt-2 block w-full rounded text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem] bg-white dark:bg-dark-offset text-zinc-900 dark:text-zinc-300",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -384,7 +384,8 @@ defmodule LandoverWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-sm text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 bg-white dark:bg-dark-offset",
+          "mt-2 block w-full rounded-sm text-zinc-900 dark:text-zinc-300
+           focus:ring-0 sm:text-sm sm:leading-6 bg-white dark:bg-dark-offset",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -488,7 +489,7 @@ defmodule LandoverWeb.CoreComponents do
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
       <table class="w-[40rem] mt-11 sm:w-full">
-        <thead class="text-sm text-left leading-6 text-zinc-500">
+        <thead class="text-sm text-left text-brand-green dark:text-brand-orange">
           <tr>
             <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal">{col[:label]}</th>
             <th :if={@action != []} class="relative p-0 pb-4">
@@ -499,27 +500,36 @@ defmodule LandoverWeb.CoreComponents do
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
+          class="relative divide-y divide-brand-green dark:divide-brand-orange
+                 border-t border-brand-green dark:border-brand-orange text-sm
+                 text-brand-green dark:text-brand-orange"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class="group hover:bg-zinc-300 hover:dark:bg-dark-offset"
+          >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
-              <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+              <div class="block py-2 pr-6">
+                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-300 group-hover:dark:bg-dark-offset" />
+                <span class={[
+                  "relative",
+                  i == 0 && "font-semibold text-brand-green dark:text-brand-orange"
+                ]}>
                   {render_slot(col, @row_item.(row))}
                 </span>
               </div>
             </td>
             <td :if={@action != []} class="relative w-14 p-0">
-              <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
+              <div class="relative whitespace-nowrap py-2 text-right text-sm font-medium">
+                <span class="absolute -inset-y-px -right-2 left-0 group-hover:bg-zinc-300 group-hover:dark:bg-dark-offset" />
                 <span
                   :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                  class="relative ml-4 font-semibold text-brand-green dark:text-brand-orange"
                 >
                   {render_slot(action, @row_item.(row))}
                 </span>
@@ -549,10 +559,10 @@ defmodule LandoverWeb.CoreComponents do
   def list(assigns) do
     ~H"""
     <div class="mt-14">
-      <dl class="-my-4 divide-y divide-zinc-100">
+      <dl class="-my-4 divide-y divide-brand-green dark:divide-brand-orange">
         <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
-          <dt class="w-1/4 flex-none text-zinc-500">{item.title}</dt>
-          <dd class="text-zinc-700">{render_slot(item)}</dd>
+          <dt class="w-1/4 flex-none text-brand-green dark:text-brand-orange">{item.title}</dt>
+          <dd class="text-brand-green dark:text-brand-orange">{render_slot(item)}</dd>
         </div>
       </dl>
     </div>
@@ -572,10 +582,7 @@ defmodule LandoverWeb.CoreComponents do
   def back(assigns) do
     ~H"""
     <div class="mt-16">
-      <.link
-        navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-      >
+      <.link navigate={@navigate} class="text-sm">
         <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
         {render_slot(@inner_block)}
       </.link>
