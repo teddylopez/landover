@@ -18,16 +18,25 @@ defmodule LandoverWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # All routes require an authenticated user
   scope "/", LandoverWeb do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated_user]
 
-    live "/", HomeLive
+    live_session :require_authenticated_user,
+      on_mount: [{LandoverWeb.UserAuth, :mount_current_user}] do
+      live "/", HomeLive
+      live "/stories", StoryLive.Index, :index
+      live "/stories/new", StoryLive.Index, :new
+      live "/stories/:id/edit", StoryLive.Index, :edit
+      live "/stories/:id", StoryLive.Show, :show
+      live "/stories/:id/show/edit", StoryLive.Show, :edit
+
+      live "/users/settings", UserSettingsLive, :edit
+      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/users/confirm/:token", UserConfirmationLive, :edit
+      live "/users/confirm", UserConfirmationInstructionsLive, :new
+    end
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", LandoverWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:landover, :dev_routes) do
@@ -46,8 +55,7 @@ defmodule LandoverWeb.Router do
     end
   end
 
-  ## Authentication routes
-
+  # Authentication routes (no user authentication required here)
   scope "/", LandoverWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
@@ -62,25 +70,10 @@ defmodule LandoverWeb.Router do
     post "/users/log_in", UserSessionController, :create
   end
 
-  scope "/", LandoverWeb do
-    pipe_through [:browser, :require_authenticated_user]
-
-    live_session :require_authenticated_user,
-      on_mount: [{LandoverWeb.UserAuth, :ensure_authenticated}] do
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
-    end
-  end
-
+  # Log out route, which does not require authentication
   scope "/", LandoverWeb do
     pipe_through [:browser]
 
     delete "/users/log_out", UserSessionController, :delete
-
-    live_session :current_user,
-      on_mount: [{LandoverWeb.UserAuth, :mount_current_user}] do
-      live "/users/confirm/:token", UserConfirmationLive, :edit
-      live "/users/confirm", UserConfirmationInstructionsLive, :new
-    end
   end
 end

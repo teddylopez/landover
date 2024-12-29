@@ -50,7 +50,11 @@ defmodule LandoverWeb.CoreComponents do
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div
+        id={"#{@id}-bg"}
+        class="bg-zinc-50/90 dark:bg-dark-offset fixed inset-0 transition-opacity"
+        aria-hidden="true"
+      />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -66,21 +70,23 @@ defmodule LandoverWeb.CoreComponents do
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded bg-white p-14 shadow-lg ring-1 transition"
+              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded bg-white dark:bg-dark-background p-14 shadow-lg ring-1 transition"
             >
-              <div class="absolute top-6 right-5">
-                <button
-                  phx-click={JS.exec("data-cancel", to: "##{@id}")}
-                  type="button"
-                  class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
-                  aria-label={gettext("close")}
-                >
-                  <.icon name="hero-x-mark-solid" class="h-5 w-5" />
-                </button>
-              </div>
-              <div id={"#{@id}-content"}>
-                {render_slot(@inner_block)}
-              </div>
+              <.content_container>
+                <div class="absolute top-6 right-5">
+                  <button
+                    phx-click={JS.exec("data-cancel", to: "##{@id}")}
+                    type="button"
+                    class="-m-3 flex-none p-3 opacity-80"
+                    aria-label={gettext("close")}
+                  >
+                    <.icon name="hero-x-mark-solid" class="h-5 w-5" />
+                  </button>
+                </div>
+                <div id={"#{@id}-content"}>
+                  {render_slot(@inner_block)}
+                </div>
+              </.content_container>
             </.focus_wrap>
           </div>
         </div>
@@ -231,7 +237,7 @@ defmodule LandoverWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded py-2 px-3",
+        "phx-submit-loading:opacity-75 px-4 py-1",
         "text-sm font-semibold leading-6 text-white dark:text-dark-background
          bg-brand-green dark:bg-brand-orange active:text-white/80",
         @class
@@ -319,7 +325,7 @@ defmodule LandoverWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+          class="rounded border-zinc-300 text-zinc-900 focus:ring-0 bg-white dark:bg-dark-offset"
           {@rest}
         />
         {@label}
@@ -336,7 +342,7 @@ defmodule LandoverWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class="mt-2 block w-full rounded border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm bg-white dark:bg-dark-offset"
         multiple={@multiple}
         {@rest}
       >
@@ -356,7 +362,7 @@ defmodule LandoverWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem]",
+          "mt-2 block w-full rounded text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem] bg-white dark:bg-dark-offset",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -378,7 +384,7 @@ defmodule LandoverWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-sm text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "mt-2 block w-full rounded-sm text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 bg-white dark:bg-dark-offset",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}

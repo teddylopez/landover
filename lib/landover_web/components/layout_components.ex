@@ -43,35 +43,17 @@ defmodule LandoverWeb.LayoutComponents do
           </div>
           <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
             <%= if @current_user do %>
-              <li class="text-[0.8125rem] leading-6 text-zinc-900">
+              <li class="text-[0.8125rem]">
                 {@current_user.email}
               </li>
               <li>
-                <.link
-                  navigate={~p"/users/settings"}
-                  class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-                >
+                <.link navigate={~p"/users/settings"} class="text-[0.8125rem] leading-6">
                   Settings
                 </.link>
               </li>
               <li>
-                <.link
-                  navigate={~p"/users/log_out"}
-                  method="delete"
-                  class="text-[0.8125rem] leading-6"
-                >
+                <.link href={~p"/users/log_out"} method="delete" class="text-[0.8125rem] leading-6">
                   Log out
-                </.link>
-              </li>
-            <% else %>
-              <li>
-                <.link navigate={~p"/users/register"} class="text-[0.8125rem] leading-6">
-                  Register
-                </.link>
-              </li>
-              <li>
-                <.link navigate={~p"/users/log_in"} class="text-[0.8125rem] leading-6">
-                  Log in
                 </.link>
               </li>
             <% end %>
@@ -111,7 +93,7 @@ defmodule LandoverWeb.LayoutComponents do
     """
   end
 
-  attr(:header, :string, required: false, default: nil)
+  attr(:label, :string, required: false, default: nil)
   attr(:link_text, :string, required: false, default: nil)
   attr(:link_url, :string, required: false, default: nil)
   attr(:class, :string, required: false, default: "")
@@ -131,8 +113,8 @@ defmodule LandoverWeb.LayoutComponents do
               </.button>
             </.link>
           </div>
-          <%= if @header do %>
-            <.content_container header={@header}>
+          <%= if @label do %>
+            <.content_container label={@label}>
               {render_slot(@inner_block)}
             </.content_container>
           <% else %>
@@ -174,7 +156,7 @@ defmodule LandoverWeb.LayoutComponents do
   #   """
   # end
 
-  attr(:header, :string, required: false, default: nil)
+  attr(:label, :string, required: false, default: nil)
   slot(:action_button, required: false)
   attr(:link_text, :string, required: false, default: nil)
   attr(:link_url, :string, required: false, default: nil)
@@ -196,8 +178,8 @@ defmodule LandoverWeb.LayoutComponents do
                 </.link>
               </div>
             </div>
-            <%= if @header do %>
-              <.content_container header={@header}>
+            <%= if @label do %>
+              <.content_container label={@label}>
                 {render_slot(@inner_block)}
               </.content_container>
             <% else %>
