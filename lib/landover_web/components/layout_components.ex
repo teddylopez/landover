@@ -17,7 +17,7 @@ defmodule LandoverWeb.LayoutComponents do
     <header class="px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between py-3 text-sm">
         <div class="flex items-center gap-4 button">
-          <.link navigate={~p"/"} class="no-underline px-2">
+          <.link navigate={~p"/"} class="no-underline px-4 py-1 text-xl">
             Landover
           </.link>
         </div>
@@ -79,15 +79,6 @@ defmodule LandoverWeb.LayoutComponents do
     </div>
     """
   end
-
-  defp translate_locale_language("es"),
-    do: dgettext("shared", "es")
-
-  defp translate_locale_language("en"),
-    do: dgettext("shared", "en")
-
-  defp translate_locale_language(""),
-    do: dgettext("shared", "en")
 
   attr(:header, :string, required: false, default: nil)
   attr(:link_text, :string, required: false, default: nil)
