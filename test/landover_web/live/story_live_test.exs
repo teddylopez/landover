@@ -104,7 +104,7 @@ defmodule LandoverWeb.StoryLiveTest do
   #     assert show_live |> element("a", "Edit") |> render_click() =~
   #              "Edit Story"
 
-  #     assert_patch(show_live, ~p"/stories/#{story}/show/edit")
+  #     assert_patch(show_live, ~p"/stories/#{story}/edit")
 
   #     assert show_live
   #            |> form("#story-form", story: @invalid_attrs)

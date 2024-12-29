@@ -33,7 +33,7 @@ defmodule Landover.Stories do
 
   defp build_query(params) do
     base_query()
-    # |> filter_by_bill_number(params[:bill_number])
+    |> filter_by_id(params[:id])
     |> preload_author(params[:preload_author])
 
     # |> sort_by(params[:sort])
@@ -46,6 +46,22 @@ defmodule Landover.Stories do
       preload: :author
     )
   end
+
+  def filter_by_id(query, nil), do: query
+
+  def filter_by_id(query, ids) when is_list(ids) do
+    from([story: story] in query,
+      where: story.id in ^ids
+    )
+  end
+
+  def filter_by_id(query, id) when is_integer(id) do
+    from([story: story] in query,
+      where: story.id == ^id
+    )
+  end
+
+  def filter_by_id(query, id) when is_binary(id), do: filter_by_id(query, String.to_integer(id))
 
   @doc """
   Gets a single story.

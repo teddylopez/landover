@@ -26,10 +26,9 @@ defmodule LandoverWeb.Router do
       on_mount: [{LandoverWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive
       live "/stories", StoryLive.Index, :index
-      live "/stories/new", StoryLive.Index, :new
-      live "/stories/:id/edit", StoryLive.Index, :edit
+      live "/stories/new", StoryLive.New, :new
+      live "/stories/:id/edit", StoryLive.Edit, :edit
       live "/stories/:id", StoryLive.Show, :show
-      live "/stories/:id/show/edit", StoryLive.Show, :edit
 
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email

@@ -2,35 +2,52 @@ defmodule LandoverWeb.StoryLive.Index do
   use LandoverWeb, :live_view
 
   alias Landover.Stories
-  alias Landover.Stories.Story
   alias Landover.Repo
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <.header>
+      Listing Stories
+      <:actions>
+        <.link patch={~p"/stories/new"}>
+          <.button>New Story</.button>
+        </.link>
+      </:actions>
+    </.header>
+
+    <.table
+      id="stories"
+      rows={@streams.stories}
+      row_click={fn {_id, story} -> JS.navigate(~p"/stories/#{story}") end}
+    >
+      <:col :let={{_id, story}} label="Name">{story.name}</:col>
+      <:col :let={{_id, story}} label="Created by">
+        {story.author.email}
+      </:col>
+      <:col :let={{_id, story}} label="Completed at">{story.completed_at}</:col>
+      <:col :let={{_id, story}} label="Metadata">{inspect(story.metadata)}</:col>
+      <:action :let={{_id, story}}>
+        <div class="sr-only">
+          <.link navigate={~p"/stories/#{story}"}>Show</.link>
+        </div>
+        <.link navigate={~p"/stories/#{story}/edit"}>Edit</.link>
+      </:action>
+      <:action :let={{id, story}}>
+        <.link
+          phx-click={JS.push("delete", value: %{id: story.id}) |> hide("##{id}")}
+          data-confirm="Are you sure?"
+        >
+          Delete
+        </.link>
+      </:action>
+    </.table>
+    """
+  end
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok, stream(socket, :stories, stories())}
-  end
-
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
-  end
-
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Edit Story")
-    |> assign(:story, Stories.get_story!(id))
-  end
-
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Story")
-    |> assign(:story, %Story{})
-  end
-
-  defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(:page_title, "Listing Stories")
-    |> assign(:story, nil)
   end
 
   @impl true

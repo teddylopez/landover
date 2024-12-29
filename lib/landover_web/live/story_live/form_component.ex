@@ -7,23 +7,25 @@ defmodule LandoverWeb.StoryLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.header>
-        {@title}
-        <:subtitle>Use this form to manage story records in your database.</:subtitle>
-      </.header>
+      <.content_container>
+        <.header>
+          {@title}
+          <:subtitle>Use this form to manage story records in your database.</:subtitle>
+        </.header>
 
-      <.simple_form
-        for={@form}
-        id="story-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
-      >
-        <.input field={@form[:name]} type="text" label="Name your tale..." />
-        <:actions>
-          <.button phx-disable-with="Saving...">Save Story</.button>
-        </:actions>
-      </.simple_form>
+        <.simple_form
+          for={@form}
+          id="story-form"
+          phx-target={@myself}
+          phx-change="validate"
+          phx-submit="save"
+        >
+          <.input field={@form[:name]} type="text" label="Name your tale..." />
+          <:actions>
+            <.button phx-disable-with="Saving...">Save Story</.button>
+          </:actions>
+        </.simple_form>
+      </.content_container>
     </div>
     """
   end
@@ -56,7 +58,7 @@ defmodule LandoverWeb.StoryLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Story updated successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_navigate(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
@@ -73,7 +75,7 @@ defmodule LandoverWeb.StoryLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Story created successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_navigate(to: ~p"/stories/#{story.id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
