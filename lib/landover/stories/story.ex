@@ -7,6 +7,9 @@ defmodule Landover.Stories.Story do
     field :metadata, :map, default: %{}
     field :completed_at, :naive_datetime
 
+    has_many :taggings, Landover.Taggable.Tagging
+    has_many :tags, through: [:taggings, :tag]
+
     belongs_to(:author, Landover.Accounts.User, foreign_key: :author_id)
 
     timestamps(type: :utc_datetime)
