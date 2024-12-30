@@ -22,7 +22,9 @@ defmodule LandoverWeb.StoryLive.Show do
       <:item title="Created by">
         {@story.author.email}
       </:item>
-      <:item title="Completed at">{@story.completed_at}</:item>
+      <:item title="Completed at">
+        {format(@story.completed_at)}
+      </:item>
       <:item title="Metadata">{inspect(@story.metadata)}</:item>
     </.list>
 

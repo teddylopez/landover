@@ -15,7 +15,8 @@ defmodule LandoverWeb.UserSessionController do
   end
 
   def create(conn, params) do
-    create(conn, params, "Welcome back!")
+    # create(conn, params, "Welcome back!")
+    create(conn, params, nil)
   end
 
   defp create(conn, %{"user" => user_params}, info) do
