@@ -6,6 +6,7 @@ defmodule Landover.Stories.Story do
     field :name, :string
     field :metadata, :map, default: %{}
     field :completed_at, :naive_datetime
+    field :private, :boolean, default: true
 
     has_many :story_tags, Landover.Taggable.StoryTag, on_replace: :delete
     has_many :tags, through: [:story_tags, :tag]
@@ -18,7 +19,7 @@ defmodule Landover.Stories.Story do
   @doc false
   def changeset(story, attrs) do
     story
-    |> cast(attrs, [:name, :author_id, :completed_at, :metadata])
+    |> cast(attrs, [:name, :author_id, :completed_at, :metadata, :private])
     |> validate_required([:name, :author_id])
     |> handle_tags(attrs)
   end

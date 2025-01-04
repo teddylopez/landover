@@ -6,16 +6,22 @@ defmodule LandoverWeb.StoryLive.StoryFormSchema do
   embedded_schema do
     field :name, :string
     field :tag_ids, {:array, :string}, default: []
+    field :private, :boolean, default: true
   end
 
   def new(story) do
-    schema = %StoryFormSchema{name: story.name, tag_ids: story_tag_ids(story)}
+    schema = %StoryFormSchema{
+      name: story.name,
+      tag_ids: story_tag_ids(story),
+      private: story.private
+    }
+
     changeset(schema)
   end
 
   def changeset(schema, attrs \\ %{}) do
     schema
-    |> Ecto.Changeset.cast(attrs, [:name, :tag_ids])
+    |> Ecto.Changeset.cast(attrs, [:name, :tag_ids, :private])
     |> Ecto.Changeset.validate_required([:name])
     |> validate_tag_ids()
   end
@@ -40,7 +46,8 @@ defmodule LandoverWeb.StoryLive.StoryFormSchema do
         if(Map.has_key?(data, :tag_ids),
           do: data.tag_ids,
           else: Enum.map(data.tag_ids, & &1.tag_id)
-        )
+        ),
+      "private" => data.private
     }
 
     {:ok, output}

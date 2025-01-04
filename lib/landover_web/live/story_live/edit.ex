@@ -42,7 +42,7 @@ defmodule LandoverWeb.StoryLive.Edit do
   end
 
   defp story(id) do
-    Stories.list_stories(%{id: id, preload_author: true, preload_story_tags: true})
+    Stories.list_stories(%{id: id, preload_author: true, preload_tags: true})
     |> Repo.one!()
   end
 end

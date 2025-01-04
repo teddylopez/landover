@@ -77,7 +77,8 @@ defmodule LandoverWeb.StoryLive.Index do
   defp stories do
     Stories.list_stories(%{
       preload_author: true,
-      sort_by: {:updated_at, :desc}
+      sort_by: {:updated_at, :desc},
+      public: true
     })
     |> Repo.all()
   end

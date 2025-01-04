@@ -3,6 +3,7 @@ defmodule LandoverWeb.StoryLive.Show do
 
   alias Landover.Repo
   alias Landover.Stories
+  alias LandoverWeb.Helpers.StoryHelpers
 
   @impl true
   def render(assigns) do
@@ -23,6 +24,9 @@ defmodule LandoverWeb.StoryLive.Show do
       </:item>
       <:item title="Created by">
         {@story.author.email}
+      </:item>
+      <:item title="Visibility">
+        {style_visibility(@story)}
       </:item>
       <:item title="Completed at">
         {format(@story.completed_at)}
@@ -79,5 +83,13 @@ defmodule LandoverWeb.StoryLive.Show do
     |> Enum.map(& &1.name)
     |> Enum.join(", ")
     |> format()
+  end
+
+  def style_visibility(story) do
+    case StoryHelpers.visibility(story) do
+      "Private" -> "<span class='text-red-500'>Private</span>"
+      "Public" -> "<span class='text-green-500'>Public</span>"
+    end
+    |> Phoenix.HTML.raw()
   end
 end

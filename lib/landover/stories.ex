@@ -34,6 +34,8 @@ defmodule Landover.Stories do
   defp build_query(params) do
     base_query()
     |> filter_by_id(params[:id])
+    |> filter_public_reports(params[:public])
+    |> filter_private_reports(params[:private])
     |> preload_author(params[:preload_author])
     |> preload_tags(params[:preload_tags])
     |> sort_by(params[:sort_by])
@@ -70,6 +72,22 @@ defmodule Landover.Stories do
   end
 
   def filter_by_id(query, id) when is_binary(id), do: filter_by_id(query, String.to_integer(id))
+
+  def filter_public_reports(query, nil), do: query
+
+  def filter_public_reports(query, true) do
+    from([story: story] in query,
+      where: story.private == false
+    )
+  end
+
+  def filter_private_reports(query, nil), do: query
+
+  def filter_private_reports(query, true) do
+    from([story: story] in query,
+      where: story.private == true
+    )
+  end
 
   defp sort_by(query, nil), do: query
 

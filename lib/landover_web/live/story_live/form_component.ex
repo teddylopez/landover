@@ -25,13 +25,16 @@ defmodule LandoverWeb.StoryLive.FormComponent do
         >
           <.input field={@form[:name]} type="text" label="Name your tale..." />
 
+          <.input type="checkbox" field={@form[:private]} label="Keep story private?" />
+
           <.label>
             {dgettext("Stories", "Genres")}
           </.label>
 
-          <div class="flex items-center flex-wrap">
+          <div :if={@selected_tags != []} class="flex items-center flex-wrap">
             <%= for tag <- @selected_tags do %>
-              <div class="border border-brand-green dark:border-dark-offset-lighter rounded-sm px-2 py-1 mx-2 my-1">
+              <div class="border border-brand-green dark:border-dark-offset-lighter
+                          rounded-sm px-2 py-1 mx-1 my-1 text-xs">
                 {tag}
               </div>
             <% end %>

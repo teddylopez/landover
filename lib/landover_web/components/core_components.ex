@@ -325,7 +325,9 @@ defmodule LandoverWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0 bg-white dark:bg-dark-offset"
+          class={"rounded border-zinc-300 text-zinc-900 focus:ring-0 bg-white dark:bg-dark-offset
+                  #{if @checked, do: "!bg-brand-green dark:!bg-brand-orange",
+                                 else: "bg-white dark:bg-dark-offset"}"}
           {@rest}
         />
         {@label}
@@ -342,7 +344,8 @@ defmodule LandoverWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm bg-white dark:bg-dark-offset"
+        class="mt-2 block w-full rounded border border-gray-300 bg-white
+               shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm bg-white dark:bg-dark-offset"
         multiple={@multiple}
         {@rest}
       >
@@ -382,14 +385,16 @@ defmodule LandoverWeb.CoreComponents do
         <div class="grid grid-cols-1 gap-1 text-sm items-baseline max-h-[100px] overflow-y-auto">
           <input type="hidden" name={@name} value="" />
           <div :for={{label, value} <- @options}>
-            <label for={"#{@name}-#{value}"}>
+            <label for={"#{@name}-#{value}"} class="mx-2">
               <input
                 type="checkbox"
                 id={"#{@name}-#{value}"}
                 name={@name}
                 value={value}
                 checked={value in @value}
-                class="mr-2 h-4 w-4 rounded"
+                class={"rounded border-zinc-300 text-zinc-900 focus:ring-0
+                       #{if "#{value}" in @value, do: "!bg-brand-green dark:!bg-brand-orange",
+                                                  else: "bg-white dark:bg-dark-offset"}"}
                 {@rest}
               />
               {label}
