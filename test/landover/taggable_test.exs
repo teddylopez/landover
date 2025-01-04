@@ -57,16 +57,16 @@ defmodule Landover.TaggableTest do
     end
   end
 
-  describe "taggings" do
-    alias Landover.Taggable.Tagging
+  describe "story_tags" do
+    alias Landover.Taggable.StoryTag
 
     import Landover.TaggableFixtures
 
     @invalid_attrs %{}
 
-    test "list_taggings/0 returns all taggings" do
+    test "list_story_tags/0 returns all story_tags" do
       tagging = tagging_fixture()
-      assert Taggable.list_taggings() == [tagging]
+      assert Taggable.list_story_tags() == [tagging]
     end
 
     test "get_tagging!/1 returns the tagging with given id" do
@@ -77,7 +77,7 @@ defmodule Landover.TaggableTest do
     test "create_tagging/1 with valid data creates a tagging" do
       valid_attrs = %{}
 
-      assert {:ok, %Tagging{} = tagging} = Taggable.create_tagging(valid_attrs)
+      assert {:ok, %StoryTag{} = tagging} = Taggable.create_tagging(valid_attrs)
     end
 
     test "create_tagging/1 with invalid data returns error changeset" do
@@ -88,7 +88,7 @@ defmodule Landover.TaggableTest do
       tagging = tagging_fixture()
       update_attrs = %{}
 
-      assert {:ok, %Tagging{} = tagging} = Taggable.update_tagging(tagging, update_attrs)
+      assert {:ok, %StoryTag{} = tagging} = Taggable.update_tagging(tagging, update_attrs)
     end
 
     test "update_tagging/2 with invalid data returns error changeset" do
@@ -99,7 +99,7 @@ defmodule Landover.TaggableTest do
 
     test "delete_tagging/1 deletes the tagging" do
       tagging = tagging_fixture()
-      assert {:ok, %Tagging{}} = Taggable.delete_tagging(tagging)
+      assert {:ok, %StoryTag{}} = Taggable.delete_tagging(tagging)
       assert_raise Ecto.NoResultsError, fn -> Taggable.get_tagging!(tagging.id) end
     end
 

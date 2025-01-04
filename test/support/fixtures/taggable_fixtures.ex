@@ -24,9 +24,7 @@ defmodule Landover.TaggableFixtures do
   def tagging_fixture(attrs \\ %{}) do
     {:ok, tagging} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Landover.Taggable.create_tagging()
 
     tagging

@@ -1,7 +1,10 @@
 defmodule LandoverWeb.StoryLive.FormComponent do
   use LandoverWeb, :live_component
 
+  alias Landover.Repo
   alias Landover.Stories
+  alias Landover.Taggable
+  alias LandoverWeb.StoryLive.StoryFormSchema
 
   @impl true
   def render(assigns) do
@@ -17,10 +20,29 @@ defmodule LandoverWeb.StoryLive.FormComponent do
           for={@form}
           id="story-form"
           phx-target={@myself}
-          phx-change="validate"
+          phx-change="update"
           phx-submit="save"
         >
           <.input field={@form[:name]} type="text" label="Name your tale..." />
+
+          <.label>
+            {dgettext("Stories", "Genres")}
+          </.label>
+
+          <div class="flex items-center flex-wrap">
+            <%= for tag <- @selected_tags do %>
+              <div class="border border-brand-green dark:border-dark-offset-lighter rounded-sm px-2 py-1 mx-2 my-1">
+                {tag}
+              </div>
+            <% end %>
+          </div>
+
+          <div class="flex">
+            <div class="flex items-center flex-wrap border border-brand-green
+                        dark:border-dark-offset-lighter p-2 rounded-sm">
+              <.checkgroup field={@form[:tag_ids]} options={genre_options()} />
+            </div>
+          </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save Story</.button>
           </:actions>
@@ -31,23 +53,32 @@ defmodule LandoverWeb.StoryLive.FormComponent do
   end
 
   @impl true
-  def update(%{story: story} = assigns, socket) do
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign_new(:form, fn ->
-       to_form(Stories.change_story(story))
-     end)}
+  def handle_event("update", %{"_target" => ["story_form", "tag_ids"]} = params, socket) do
+    tag_ids =
+      params["story_form"]["tag_ids"]
+      |> Enum.reject(&(&1 == ""))
+      |> Enum.map(&String.to_integer/1)
+
+    socket
+    |> assign(:selected_tags, selected_tags(tag_ids))
+    |> assign_form(params)
+    |> noreply()
   end
 
   @impl true
-  def handle_event("validate", %{"story" => story_params}, socket) do
-    changeset = Stories.change_story(socket.assigns.story, story_params)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+  def handle_event("update", params, socket) do
+    socket
+    |> assign_form(params)
+    |> noreply()
   end
 
-  def handle_event("save", %{"story" => story_params}, socket) do
-    save_story(socket, socket.assigns.action, story_params)
+  def handle_event("save", %{"story_form" => story_params}, socket) do
+    with {:ok, output_data} <- StoryFormSchema.submit(socket.assigns.form, story_params) do
+      save_story(socket, socket.assigns.action, output_data)
+    else
+      {:error, changeset} ->
+        {:noreply, assign(socket, form: to_form(changeset, as: "story_form"))}
+    end
   end
 
   defp save_story(socket, :edit, story_params) do
@@ -83,4 +114,21 @@ defmodule LandoverWeb.StoryLive.FormComponent do
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
+
+  defp assign_form(socket, params) do
+    changeset = StoryFormSchema.validate(socket.assigns.form, params["story_form"])
+    assign(socket, form: to_form(changeset, as: "story_form"))
+  end
+
+  defp genre_options do
+    Taggable.list_tags(%{sort_by: {:name, :asc}})
+    |> Repo.all()
+    |> Enum.map(&{&1.name, "#{&1.id}"})
+  end
+
+  defp selected_tags(tag_ids) do
+    Taggable.list_tags(%{id: tag_ids, sort_by: {:name, :asc}})
+    |> Repo.all()
+    |> Enum.map(& &1.name)
+  end
 end

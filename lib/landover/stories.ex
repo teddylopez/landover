@@ -35,6 +35,7 @@ defmodule Landover.Stories do
     base_query()
     |> filter_by_id(params[:id])
     |> preload_author(params[:preload_author])
+    |> preload_tags(params[:preload_tags])
     |> sort_by(params[:sort_by])
   end
 
@@ -43,6 +44,14 @@ defmodule Landover.Stories do
   defp preload_author(query, true) do
     from([story: story] in query,
       preload: :author
+    )
+  end
+
+  defp preload_tags(query, nil), do: query
+
+  defp preload_tags(query, true) do
+    from([story: story] in query,
+      preload: :tags
     )
   end
 

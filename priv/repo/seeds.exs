@@ -12,4 +12,8 @@
 
 Landover.Accounts.register_user(%{email: "ted@landover.com", password: "password12345"})
 
+for {name, slug} <- Landover.Taggable.Tag.genre_options() do
+  Landover.Repo.insert!(%Landover.Taggable.Tag{name: name, slug: slug})
+end
+
 IO.puts("Seeds successfully imported...")

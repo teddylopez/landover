@@ -18,14 +18,21 @@ defmodule LandoverWeb.StoryLive.Show do
     </.header>
 
     <.list>
-      <:item title="Name">{@story.name}</:item>
+      <:item title="Name">
+        {@story.name}
+      </:item>
       <:item title="Created by">
         {@story.author.email}
       </:item>
       <:item title="Completed at">
         {format(@story.completed_at)}
       </:item>
-      <:item title="Metadata">{inspect(@story.metadata)}</:item>
+      <:item title="Metadata">
+        {format(@story.metadata)}
+      </:item>
+      <:item title="Tags">
+        {display_tags(@story.tags)}
+      </:item>
     </.list>
 
     <.back navigate={~p"/stories"}>Back to stories</.back>
@@ -63,7 +70,14 @@ defmodule LandoverWeb.StoryLive.Show do
   end
 
   defp story(id) do
-    Stories.list_stories(%{id: id, preload_author: true})
+    Stories.list_stories(%{id: id, preload_author: true, preload_tags: true})
     |> Repo.one!()
+  end
+
+  defp display_tags(tags) do
+    tags
+    |> Enum.map(& &1.name)
+    |> Enum.join(", ")
+    |> format()
   end
 end

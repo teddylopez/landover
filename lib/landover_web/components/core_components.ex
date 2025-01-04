@@ -208,7 +208,7 @@ defmodule LandoverWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white dark:bg-dark-background">
+      <div class="mt-10 space-y-8 bg-amber-50 dark:bg-dark-background">
         {render_slot(@inner_block, f)}
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           {render_slot(action, f)}
@@ -283,7 +283,7 @@ defmodule LandoverWeb.CoreComponents do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
-               range search select tel text textarea time url week)
+               range search select tel text textarea time url week checkgroup)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -373,6 +373,35 @@ defmodule LandoverWeb.CoreComponents do
     """
   end
 
+  # Custom check box group
+  def input(%{type: "checkgroup"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name} class="text-sm">
+      <.label :if={@label} for={@id}>{@label}</.label>
+      <div class="mt-1 w-full">
+        <div class="grid grid-cols-1 gap-1 text-sm items-baseline max-h-[100px] overflow-y-auto">
+          <input type="hidden" name={@name} value="" />
+          <div :for={{label, value} <- @options}>
+            <label for={"#{@name}-#{value}"}>
+              <input
+                type="checkbox"
+                id={"#{@name}-#{value}"}
+                name={@name}
+                value={value}
+                checked={value in @value}
+                class="mr-2 h-4 w-4 rounded"
+                {@rest}
+              />
+              {label}
+            </label>
+          </div>
+        </div>
+      </div>
+      <.error :for={msg <- @errors}>{msg}</.error>
+    </div>
+    """
+  end
+
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
@@ -394,6 +423,28 @@ defmodule LandoverWeb.CoreComponents do
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
+  end
+
+  @doc """
+  Generate a checkbox group for multi-select.
+  """
+  attr :id, :any
+  attr :name, :any
+  attr :label, :string, default: nil
+  attr :field, Phoenix.HTML.FormField
+  attr :errors, :list
+  attr :required, :boolean, default: false
+  attr :options, :list, doc: "list of options formatted as [{label, value}]"
+  attr :rest, :global, include: ~w(disabled form readonly)
+  attr :class, :string, default: nil
+
+  def checkgroup(assigns) do
+    new_assigns =
+      assigns
+      |> assign(:multiple, true)
+      |> assign(:type, "checkgroup")
+
+    input(new_assigns)
   end
 
   @doc """
@@ -507,7 +558,7 @@ defmodule LandoverWeb.CoreComponents do
           <tr
             :for={row <- @rows}
             id={@row_id && @row_id.(row)}
-            class="group hover:bg-zinc-300 hover:dark:bg-dark-offset"
+            class="group hover:bg-amber-100 hover:dark:bg-dark-offset"
           >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
@@ -515,7 +566,7 @@ defmodule LandoverWeb.CoreComponents do
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-2 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-300 group-hover:dark:bg-dark-offset" />
+                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-amber-100 group-hover:dark:bg-dark-offset" />
                 <span class={[
                   "relative",
                   i == 0 && "font-semibold text-brand-green dark:text-brand-orange"
@@ -526,7 +577,7 @@ defmodule LandoverWeb.CoreComponents do
             </td>
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-2 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-2 left-0 group-hover:bg-zinc-300 group-hover:dark:bg-dark-offset" />
+                <span class="absolute -inset-y-px -right-2 left-0 group-hover:bg-amber-100 group-hover:dark:bg-dark-offset" />
                 <span
                   :for={action <- @action}
                   class="relative ml-4 font-semibold text-brand-green dark:text-brand-orange"
@@ -751,7 +802,7 @@ defmodule LandoverWeb.CoreComponents do
   def content_section(assigns) do
     ~H"""
     <div
-      class={"pb-4 mx-1 lg:mx-0 w-full bg-white rounded-sm #{@class}"}
+      class={"pb-4 mx-1 lg:mx-0 w-full bg-amber-100 rounded-sm #{@class}"}
       style="border-top: 2px solid black;"
     >
       <div class="flex">

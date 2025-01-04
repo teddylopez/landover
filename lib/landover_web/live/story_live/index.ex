@@ -21,24 +21,33 @@ defmodule LandoverWeb.StoryLive.Index do
       rows={@streams.stories}
       row_click={fn {_id, story} -> JS.navigate(~p"/stories/#{story}") end}
     >
-      <:col :let={{_id, story}} label="Name">{story.name}</:col>
+      <:col :let={{_id, story}} label="Name">
+        {story.name}
+      </:col>
       <:col :let={{_id, story}} label="Created by">
         {story.author.email}
       </:col>
       <:col :let={{_id, story}} label="Completed at">
         {format(story.completed_at)}
       </:col>
-      <:col :let={{_id, story}} label="Metadata">{inspect(story.metadata)}</:col>
+      <:col :let={{_id, story}} label="Metadata">
+        {format(story.metadata)}
+      </:col>
       <:action :let={{_id, story}}>
         <div class="sr-only">
-          <.link navigate={~p"/stories/#{story}"}>Show</.link>
+          <.link navigate={~p"/stories/#{story}"} class="text-xs">
+            Show
+          </.link>
         </div>
-        <.link navigate={~p"/stories/#{story}/edit"}>Edit</.link>
+        <.link navigate={~p"/stories/#{story}/edit"} class="text-xs">
+          Edit
+        </.link>
       </:action>
       <:action :let={{id, story}}>
         <.link
           phx-click={JS.push("delete", value: %{id: story.id}) |> hide("##{id}")}
           data-confirm="Are you sure?"
+          class="text-xs"
         >
           Delete
         </.link>
@@ -66,7 +75,10 @@ defmodule LandoverWeb.StoryLive.Index do
   end
 
   defp stories do
-    Stories.list_stories(%{preload_author: true, sort_by: {:updated_at, :desc}})
+    Stories.list_stories(%{
+      preload_author: true,
+      sort_by: {:updated_at, :desc}
+    })
     |> Repo.all()
   end
 end
