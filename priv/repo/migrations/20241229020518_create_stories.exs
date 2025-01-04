@@ -3,7 +3,7 @@ defmodule Landover.Repo.Migrations.CreateStories do
 
   def change do
     create table(:stories) do
-      add :name, :string, null: false
+      add :title, :string, null: false
       add :author_id, :integer, null: false
       add :completed_at, :naive_datetime
       add :metadata, :jsonb
@@ -12,7 +12,7 @@ defmodule Landover.Repo.Migrations.CreateStories do
       timestamps(type: :utc_datetime)
     end
 
-    create index(:stories, :name)
+    create index(:stories, :title)
     create index(:stories, :author_id)
     create index(:stories, :completed_at)
     create index(:stories, :metadata, using: :gin)

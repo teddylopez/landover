@@ -317,7 +317,7 @@ defmodule LandoverWeb.CoreComponents do
 
     ~H"""
     <div>
-      <label class="flex items-center gap-4 text-sm leading-6">
+      <label class="flex items-center gap-4 text-sm leading-6 cursor-pointer">
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
         <input
           type="checkbox"
@@ -325,7 +325,8 @@ defmodule LandoverWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class={"rounded border-zinc-300 text-zinc-900 focus:ring-0 bg-white dark:bg-dark-offset
+          class={"rounded border-zinc-300 text-zinc-900 focus:ring-0
+                  bg-white dark:bg-dark-offset cursor-pointer
                   #{if @checked, do: "!bg-brand-green dark:!bg-brand-orange",
                                  else: "bg-white dark:bg-dark-offset"}"}
           {@rest}
@@ -385,14 +386,14 @@ defmodule LandoverWeb.CoreComponents do
         <div class="grid grid-cols-1 gap-1 text-sm items-baseline max-h-[100px] overflow-y-auto">
           <input type="hidden" name={@name} value="" />
           <div :for={{label, value} <- @options}>
-            <label for={"#{@name}-#{value}"} class="mx-2">
+            <label for={"#{@name}-#{value}"} class="mx-2 cursor-pointer">
               <input
                 type="checkbox"
                 id={"#{@name}-#{value}"}
                 name={@name}
                 value={value}
                 checked={value in @value}
-                class={"rounded border-zinc-300 text-zinc-900 focus:ring-0
+                class={"rounded border-zinc-300 text-zinc-900 focus:ring-0 cursor-pointer
                        #{if "#{value}" in @value, do: "!bg-brand-green dark:!bg-brand-orange",
                                                   else: "bg-white dark:bg-dark-offset"}"}
                 {@rest}

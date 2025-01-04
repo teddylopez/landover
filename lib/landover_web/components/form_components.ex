@@ -36,7 +36,7 @@ defmodule LandoverWeb.FormComponents do
     <%= if @search_results != [] do %>
       <div class="relative">
         <div class="absolute z-50 left-0 right-0 rounded border border-gray-100 shadow py-1 bg-white">
-          <%= for {search_result, idx} <- Enum.with_index(@search_results) do %>
+          <%= for {search_result, _idx} <- Enum.with_index(@search_results) do %>
             {format_search_result(search_result, @query)}
           <% end %>
         </div>

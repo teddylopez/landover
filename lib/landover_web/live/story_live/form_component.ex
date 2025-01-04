@@ -23,7 +23,7 @@ defmodule LandoverWeb.StoryLive.FormComponent do
           phx-change="update"
           phx-submit="save"
         >
-          <.input field={@form[:name]} type="text" label="Name your tale..." />
+          <.input field={@form[:title]} type="text" label="Title your tale..." />
 
           <.input type="checkbox" field={@form[:private]} label="Keep story private?" />
 

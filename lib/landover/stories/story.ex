@@ -3,7 +3,7 @@ defmodule Landover.Stories.Story do
   import Ecto.Changeset
 
   schema "stories" do
-    field :name, :string
+    field :title, :string
     field :metadata, :map, default: %{}
     field :completed_at, :naive_datetime
     field :private, :boolean, default: true
@@ -19,8 +19,8 @@ defmodule Landover.Stories.Story do
   @doc false
   def changeset(story, attrs) do
     story
-    |> cast(attrs, [:name, :author_id, :completed_at, :metadata, :private])
-    |> validate_required([:name, :author_id])
+    |> cast(attrs, [:title, :author_id, :completed_at, :metadata, :private])
+    |> validate_required([:title, :author_id])
     |> handle_tags(attrs)
   end
 

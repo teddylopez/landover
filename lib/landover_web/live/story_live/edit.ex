@@ -29,7 +29,7 @@ defmodule LandoverWeb.StoryLive.Edit do
     changeset = StoryFormSchema.new(story)
 
     socket
-    |> assign(:page_title, "Edit Story")
+    |> assign(:page_title, "#{story.title} — Edit")
     |> assign(:story, story)
     |> assign(:form, to_form(changeset, as: "story_form"))
     |> assign(:selected_tags, Enum.map(story.tags, & &1.name))

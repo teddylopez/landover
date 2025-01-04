@@ -8,7 +8,7 @@ defmodule LandoverWeb.StoryLive.Index do
   def render(assigns) do
     ~H"""
     <.header>
-      Listing Stories
+      Stories
       <:actions>
         <.link patch={~p"/stories/new"}>
           <.button>New Story</.button>
@@ -21,8 +21,8 @@ defmodule LandoverWeb.StoryLive.Index do
       rows={@streams.stories}
       row_click={fn {_id, story} -> JS.navigate(~p"/stories/#{story}") end}
     >
-      <:col :let={{_id, story}} label="Name">
-        {story.name}
+      <:col :let={{_id, story}} label="Title">
+        {story.title}
       </:col>
       <:col :let={{_id, story}} label="Created by">
         {story.author.email}

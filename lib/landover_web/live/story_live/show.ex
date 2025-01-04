@@ -19,8 +19,8 @@ defmodule LandoverWeb.StoryLive.Show do
     </.header>
 
     <.list>
-      <:item title="Name">
-        {@story.name}
+      <:item title="Title">
+        {@story.title}
       </:item>
       <:item title="Created by">
         {@story.author.email}
