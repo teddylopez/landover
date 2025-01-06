@@ -10,6 +10,7 @@ defmodule Landover.Stories.Story do
 
     has_many :story_tags, Landover.Taggable.StoryTag, on_replace: :delete
     has_many :tags, through: [:story_tags, :tag]
+    has_many :prompts, Landover.StoryPrompts.StoryPrompt, on_replace: :delete
 
     belongs_to(:author, Landover.Accounts.User, foreign_key: :author_id)
 

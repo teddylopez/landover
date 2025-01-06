@@ -1,6 +1,8 @@
 alias Landover.Accounts.User
 alias Landover.Stories
 alias Landover.Stories.Story
+alias Landover.StoryPrompts
+alias Landover.StoryPrompts.StoryPrompt
 alias Landover.Taggable
 alias Landover.Taggable.Tag
 alias Landover.Taggable.StoryTag

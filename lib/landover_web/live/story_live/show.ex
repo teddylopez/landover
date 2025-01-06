@@ -35,7 +35,7 @@ defmodule LandoverWeb.StoryLive.Show do
         {format(@story.metadata)}
       </:item>
       <:item title="Tags">
-        {display_tags(@story.tags)}
+        <.display_tags tags={@story.tags} />
       </:item>
     </.list>
 
@@ -78,11 +78,19 @@ defmodule LandoverWeb.StoryLive.Show do
     |> Repo.one!()
   end
 
-  defp display_tags(tags) do
-    tags
-    |> Enum.map(& &1.name)
-    |> Enum.join(", ")
-    |> format()
+  defp display_tags(assigns) do
+    ~H"""
+    <div class="flex items-center flex-wrap">
+      <%= for tag <- @tags do %>
+        <.link navigate={~p"/genres/#{tag.slug}"} class="no-underline">
+          <div class="border border-brand-green dark:border-dark-offset-lighter
+                      rounded-sm px-2 py-1 mx-1 my-1 text-xs cursor-pointer">
+            {tag.name}
+          </div>
+        </.link>
+      <% end %>
+    </div>
+    """
   end
 
   def style_visibility(story) do
