@@ -59,10 +59,10 @@ defmodule LandoverWeb.LayoutComponents do
             <% end %>
           </ul>
           <div class="flex items-center cursor-pointer">
-            <div class="sun-selector hidden dark:inline" phx-hook="AppThemes" id="light-theme-toggle">
+            <div class="sun-selector hidden dark:inline" id="light-theme-toggle">
               <.icon name="hero-sun" class="h-5 w-5 bg-transparent dark:bg-white" />
             </div>
-            <div class="moon-selector inline dark:hidden" phx-hook="AppThemes" id="dark-theme-toggle">
+            <div class="moon-selector inline dark:hidden" id="dark-theme-toggle">
               <.icon name="hero-moon" class="h-5 w-5 bg-gray-900 dark:bg-transparent" />
             </div>
           </div>
