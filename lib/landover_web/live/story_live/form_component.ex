@@ -22,6 +22,7 @@ defmodule LandoverWeb.StoryLive.FormComponent do
           phx-target={@myself}
           phx-change="update"
           phx-submit="save"
+          phx-auto-recover="recover"
         >
           <.input field={@form[:title]} type="text" label="Title your tale..." />
 
@@ -57,13 +58,8 @@ defmodule LandoverWeb.StoryLive.FormComponent do
 
   @impl true
   def handle_event("update", %{"_target" => ["story_form", "tag_ids"]} = params, socket) do
-    tag_ids =
-      params["story_form"]["tag_ids"]
-      |> Enum.reject(&(&1 == ""))
-      |> Enum.map(&String.to_integer/1)
-
     socket
-    |> assign(:selected_tags, selected_tags(tag_ids))
+    |> assign_selected_tags(params)
     |> assign_form(params)
     |> noreply()
   end
@@ -71,6 +67,14 @@ defmodule LandoverWeb.StoryLive.FormComponent do
   @impl true
   def handle_event("update", params, socket) do
     socket
+    |> assign_form(params)
+    |> noreply()
+  end
+
+  @impl true
+  def handle_event("recover", params, socket) do
+    socket
+    |> assign_selected_tags(params)
     |> assign_form(params)
     |> noreply()
   end
@@ -121,6 +125,16 @@ defmodule LandoverWeb.StoryLive.FormComponent do
   defp assign_form(socket, params) do
     changeset = StoryFormSchema.validate(socket.assigns.form, params["story_form"])
     assign(socket, form: to_form(changeset, as: "story_form"))
+  end
+
+  defp assign_selected_tags(socket, params) do
+    tag_ids =
+      params["story_form"]["tag_ids"]
+      |> Enum.reject(&(&1 == ""))
+      |> Enum.map(&String.to_integer/1)
+
+    socket
+    |> assign(:selected_tags, selected_tags(tag_ids))
   end
 
   defp genre_options do
