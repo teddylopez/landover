@@ -4,7 +4,7 @@ defmodule LandoverWeb.StoryLive.Edit do
   alias Landover.Stories
   alias Landover.Repo
 
-  alias LandoverWeb.StoryLive.StoryFormSchema
+  alias LandoverWeb.StoryLive.Form.Schema
 
   @impl true
   def render(assigns) do
@@ -26,7 +26,7 @@ defmodule LandoverWeb.StoryLive.Edit do
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     story = story(id)
-    changeset = StoryFormSchema.new(story)
+    changeset = Schema.new(story)
 
     socket
     |> assign(:page_title, "#{story.title} — Edit")
@@ -42,7 +42,12 @@ defmodule LandoverWeb.StoryLive.Edit do
   end
 
   defp story(id) do
-    Stories.list_stories(%{id: id, preload_author: true, preload_tags: true})
+    Stories.list_stories(%{
+      id: id,
+      preload_author: true,
+      preload_tags: true,
+      preload_prompts: true
+    })
     |> Repo.one!()
   end
 end

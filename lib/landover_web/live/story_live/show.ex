@@ -74,7 +74,11 @@ defmodule LandoverWeb.StoryLive.Show do
   end
 
   defp story(id) do
-    Stories.list_stories(%{id: id, preload_author: true, preload_tags: true})
+    Stories.list_stories(%{
+      id: id,
+      preload_author: true,
+      preload_tags: true
+    })
     |> Repo.one!()
   end
 

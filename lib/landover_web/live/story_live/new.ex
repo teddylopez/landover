@@ -1,7 +1,8 @@
 defmodule LandoverWeb.StoryLive.New do
   use LandoverWeb, :live_view
 
-  alias LandoverWeb.StoryLive.StoryFormSchema
+  alias LandoverWeb.StoryLive.Form.Schema
+  alias LandoverWeb.StoryLive.Form.PromptSchema
 
   @impl true
   def render(assigns) do
@@ -22,8 +23,8 @@ defmodule LandoverWeb.StoryLive.New do
 
   @impl true
   def mount(_params, _session, socket) do
-    story = %StoryFormSchema{}
-    changeset = StoryFormSchema.changeset(story)
+    story = %Schema{prompt_fields: [%PromptSchema{}]}
+    changeset = Schema.changeset(story)
 
     socket
     |> assign(:page_title, "New Story")

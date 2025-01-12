@@ -38,6 +38,7 @@ defmodule Landover.Stories do
     |> filter_private_reports(params[:private])
     |> preload_author(params[:preload_author])
     |> preload_tags(params[:preload_tags])
+    |> preload_prompts(params[:preload_prompts])
     |> sort_by(params[:sort_by])
   end
 
@@ -54,6 +55,14 @@ defmodule Landover.Stories do
   defp preload_tags(query, true) do
     from([story: story] in query,
       preload: :tags
+    )
+  end
+
+  defp preload_prompts(query, nil), do: query
+
+  defp preload_prompts(query, true) do
+    from([story: story] in query,
+      preload: :prompts
     )
   end
 

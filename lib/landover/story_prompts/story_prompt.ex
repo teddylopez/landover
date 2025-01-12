@@ -2,6 +2,8 @@ defmodule Landover.StoryPrompts.StoryPrompt do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Landover.StoryPrompts.StoryPrompt
+
   schema "story_prompts" do
     field :text, :string
     field :order, :integer
@@ -16,5 +18,9 @@ defmodule Landover.StoryPrompts.StoryPrompt do
     story_prompt
     |> cast(attrs, [:order, :text])
     |> validate_required([:order, :text])
+  end
+
+  def new(attrs \\ %{}) do
+    changeset(%StoryPrompt{}, attrs)
   end
 end

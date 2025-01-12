@@ -226,8 +226,17 @@ defmodule LandoverWeb.CoreComponents do
       <.button>Send!</.button>
       <.button phx-click="go" class="ml-2">Send!</.button>
   """
+  @doc """
+  Renders a button with support for different variants.
+
+  ## Examples
+
+      <.button>Send!</.button>
+      <.button variant="secondary" phx-click="go" class="ml-2">Cancel</.button>
+  """
   attr :type, :string, default: nil
   attr :class, :string, default: nil
+  attr :variant, :string, default: "primary"
   attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
@@ -237,9 +246,7 @@ defmodule LandoverWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 px-4 py-1",
-        "text-sm font-semibold leading-6 text-white dark:text-dark-background
-         bg-brand-green dark:bg-brand-orange active:text-white/80",
+        button_classes(@variant),
         @class
       ]}
       {@rest}
@@ -247,6 +254,19 @@ defmodule LandoverWeb.CoreComponents do
       {render_slot(@inner_block)}
     </button>
     """
+  end
+
+  defp button_classes("primary") do
+    "phx-submit-loading:opacity-75 px-4 py-1 text-sm font-semibold leading-6 text-white dark:text-dark-background bg-brand-green dark:bg-brand-orange active:text-white/80"
+  end
+
+  defp button_classes("secondary") do
+    "bg-transparent border border-brand-green dark:border-brand-orange px-4 py-1 text-sm"
+  end
+
+  defp button_classes(_variant) do
+    # Fallback or default style
+    "px-4 py-1 text-sm font-semibold leading-6"
   end
 
   @doc """
